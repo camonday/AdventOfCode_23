@@ -13,8 +13,9 @@ int main()
     std::cout << "Hello World!\n";
     // Create a text string, which is used to output the text file
     string myText;
-    int suma, first, last;
+    int suma, gameId;
     suma = 0;
+    int maxR = 12, maxG = 13, maxB = 14;
 
     // Read from the text file
     ifstream MyReadFile("data.txt");
@@ -25,20 +26,20 @@ int main()
         // Output the text from the file
         first = 0;
         last = 0;
+        myText = checkForSubtext("red",myText,'R');
+        myText = checkForSubtext("blue", myText, 'B');
+        myText = checkForSubtext("green", myText, 'G');
 
         cout << "\n" << myText << " ";
-        myText=checkForSubtext("one", myText, '1');
-        myText=checkForSubtext("two", myText, '2');
-        myText=checkForSubtext("three", myText, '3');
-        myText=checkForSubtext("four", myText, '4');
-        myText=checkForSubtext("five", myText, '5');
-        myText=checkForSubtext("six", myText, '6');
-        myText=checkForSubtext("seven", myText, '7');
-        myText=checkForSubtext("eight", myText, '8');
-        myText=checkForSubtext("nine", myText, '9');
-        //cout <<myText << " ";
+        gameId = 0;
+        for (int i = 5; isdigit(myText[i]); i++) {
+            gameId *= 10;
+            gameId = myText[5] - '0';
+        }
+        cout <<gameId << " ";
 
         for (char znak : myText) {
+            
             if (isdigit(znak)) {
                 znak -= '0';
                 last = znak;
@@ -46,11 +47,36 @@ int main()
                     first = last;
                     first *= 10;
                 }
+                else {
+                    first += last;
+                }
+                
+            }
+            if (znak == 'R') {
+                //check red
+                if (first > maxR) {
+                    gameId = 0;
+                }
+                first = 0;
+
+            }
+            if (znak == 'G') {
+                //check green
+                if (first > maxG) {
+                    gameId = 0;
+                }
+                first = 0;
+            }            
+            if (znak == 'B') {
+                //check blue
+                if (first > maxB) {
+                    gameId = 0;
+                }
+                first = 0;
             }
         }
-        first += last;
-        cout << first;
-        suma += first;
+        cout << gameId;
+        suma += gameId;
     }
     cout << "\n\n"<<suma;
     // Close the file
